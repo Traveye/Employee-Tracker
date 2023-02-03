@@ -30,7 +30,11 @@ After, I built my initial prompt menu using inquirer. Each selection would trigg
 
 ![menu](./assets/menu.png)
 
-You can watch a demo of the application in action [here](url)
+To display the departments, roles, and employees I used a series of select statmenents. The first for deparments only required the one table, but I needed a Right Join the display the results from roles. The final table for all employees was infitnitely more complicated and requried an two inner joins using all three tables and a left join to isolate the manager data. 
+
+For the remaining prompts, I used a series of asynchrounous functions. For readability I opted to use the Async/Await format. The majority of these prompts required an initial call in order to obtiain the current values of certain tables so they could be used to populate the prompts. Once the user input is comple a final call to the database carreis a sequal statement to either Insert or Update depending on the prompt. 
+
+You can watch a demo of the application in action [here](https://drive.google.com/file/d/1pNrKr6Qf7fT4yRG1rOohyxPEhjF32mxH/view) and you can check out the code [here](https://github.com/Traveye/Employee-Tracker).
 
 ## Usage
 NA
