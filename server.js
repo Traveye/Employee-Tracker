@@ -29,35 +29,27 @@ async function init() {
   //determines next func.
   switch (userInput.userChoice) {
     case "View All Employees":
-      console.log("viewing emps");
       allEmp();
       break;
     case "Add Employee":
-      console.log("adding emp");
       addEmployee();
       break;
     case "Update Employee Role":
-      console.log("updating role");
       updateEmpRole();
       break;
     case "View All Roles":
-      console.log("viewing roles");
       allRole();
       break;
     case "Add Role":
-      console.log("adding role");
       addRole();
       break;
     case "View All Departments":
-      console.log("vad");
       allDept();
       break;
     case "Add Department":
-      console.log("adding D");
       addDept();
       break;
     default:
-      console.log("something went wrong");
       init();
       break;
   }
@@ -193,7 +185,7 @@ async function updateEmpRole() {
       choices: titles,
     },
   ]);
-  console.log(details);
+  
   const { first_name, last_name, role } = details;
 
   role_id = await new Promise((resolve, reject) => {
@@ -307,7 +299,6 @@ async function addDept() {
       message: "What is the name of the new department?",
     },
   ]);
-  console.log(details);
   const { dept } = details;
   db.query(`INSERT INTO department (name) VALUES (?);`, dept, (err) => {
     if (err) throw err;
