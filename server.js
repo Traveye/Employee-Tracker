@@ -73,7 +73,7 @@ async function checkIn() {
       }
     ]);
 
-    if(userInput === "yes") {
+    if(userInput.answer) {
       init();
     } else {
       process.exit();
@@ -99,6 +99,23 @@ function allEmp() {
 
 
 async function addEmployee() {
+
+  let titles = await new Promise((resolve, reject) => {
+    db.query("SELECT title FROM role", (err, res) => {
+      if (err) reject(err);
+      resolve(res.map((obj) => obj.title));
+    });
+  });
+
+  let manager = await new Promise((resolve, reject) => {
+    db.query("SELECT first_name, last_name FROM employee WHERE id IN (SELECT manager_id FROM employee WHERE manager_id IS NOT NULL)", (err, res) => {
+      if (err) reject(err);
+      resolve(res.map((obj) => `${obj.first_name} ${obj.last_name}`));
+    });
+  });
+
+  let managers = [...manager, "null"];
+
   let details = await inquirer.prompt([
     {
       name: "first_name",
@@ -109,17 +126,35 @@ async function addEmployee() {
       message: "What is their last name?",
     },
     {
-      name: "role_id",
-      message: "What is their role id?",
+      type: "list",
+      name: "role",
+      message: "Choose their role from the list below",
+      choices: titles,
     },
     {
-      name: "manager_id",
-      message:
-        "What is their manager ID? If their is no mananger simply press enter.",
+      type: 'list',
+      name: "manager",
+      message: "Choose a manager from the list below. If their is no mananger select null.",
+      choices: managers
+
     },
   ]);
-  console.log(details);
-  const { first_name, last_name, role_id, manager_id } = details;
+  
+  const { first_name, last_name, role, manager_id } = details;
+
+  num = await new Promise((resolve, reject) => {
+    db.query(
+      `SELECT id FROM role WHERE title = ?;`,
+      [role],
+      (err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      }
+    );
+  });
+
+  let role_id = num[0].id;
+
   db.query(
     `INSERT INTO EMPLOYEE (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`,
     [first_name, last_name, role_id, manager_id],
@@ -185,7 +220,7 @@ async function updateEmpRole() {
   }, 500);
 }
 
-///////////////////role functions//////////////////////
+/////////////////////////////role functions//////////////////////
 
 function allRole() {
   db.query(
@@ -238,6 +273,8 @@ async function addRole() {
     );
   });
 
+  let department_id = dept_id[0].id;
+
   db.query(
     `INSERT INTO ROLE (title, salary, department_id) VALUES (?, ?, ?);`,
     [title, salary, department_id],
@@ -251,7 +288,7 @@ async function addRole() {
   }, 500);
 }
 
-////////////////////////dept functions/////////////////
+////////////////////////dept functions////////////////////////////
 
 function allDept() {
   db.query("SELECT * FROM DEPARTMENT;", (err, res) => {
