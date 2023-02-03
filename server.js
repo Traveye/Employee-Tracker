@@ -2,26 +2,10 @@ const express = require('express');
 const app = express();
 const inquirer = require("inquirer");
 const chalk = require("chalk");
-const mysql = require("mysql2");
 const apiRouter = require('./routes/index');
 
 
 app.use('/api', apiRouter);
-
-const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  database: "employees_db",
-  password: "Password@123",
-});
-con
-  .promise()
-  .query("SELECT 1")
-  .then(([rows, fields]) => {
-    console.log(rows);
-  })
-  .catch(console.log)
-  .then(() => con.end());
 
 
 async function init() {
