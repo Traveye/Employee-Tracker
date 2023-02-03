@@ -1,13 +1,14 @@
+//npm requirements
 const express = require('express');
-const app = express();
 const inquirer = require("inquirer");
 const chalk = require("chalk");
-const apiRouter = require('./routes/index');
+const cTable = require("console.table")
 
+//initiallizing and rel. file imports
+const app = express();
+const db = require('./connection/db');
 
-app.use('/api', apiRouter);
-
-
+//init user menu
 async function init() {
   const userInput = await inquirer.prompt([
     {
@@ -27,11 +28,14 @@ async function init() {
     },
   ]);
 
-  
+  //determines next func.
   switch(userInput.userChoice) {
     case "View All Employees": 
       console.log('viewing emps');
-      init();
+      db.query("SELECT * FROM EMPLOYEE;", (err, res) => {
+        if(err) throw err;
+        console.table(res);
+      })
       break;
     case "Add Employee":
       console.log('adding emp');
@@ -65,3 +69,10 @@ async function init() {
   }
 }
 init();
+
+
+
+
+
+// app.use('/api', apiRouter);
+// const apiRouter = require('./routes/index');
