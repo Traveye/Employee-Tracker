@@ -1,6 +1,12 @@
+const express = require('express');
+const app = express();
 const inquirer = require("inquirer");
 const chalk = require("chalk");
 const mysql = require("mysql2");
+const apiRouter = require('./routes/index');
+
+
+app.use('/api', apiRouter);
 
 const con = mysql.createConnection({
   host: "localhost",
