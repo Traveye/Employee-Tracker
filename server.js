@@ -63,9 +63,27 @@ async function init() {
   }
 }
 
+//this will appear after every other function ends to allow the user to ret. to main menu or to exit the app. 
+async function checkIn() {
+    let userInput = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'answer',
+        message: 'Would you like to return the the main menu?'
+      }
+    ]);
+
+    if(userInput === "yes") {
+      init();
+    } else {
+      process.exit();
+    }
+
+}
+
 // db query functions below to run based on user input above.
 
-//employee functions
+//////////////////////employee functions//////////////////////
 function allEmp() {
   db.query(
     "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name, role.salary, manager.first_name as manager_first_name, manager.last_name as manager_last_name FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id LEFT JOIN employee as manager ON employee.manager_id = manager.id;",
@@ -74,8 +92,11 @@ function allEmp() {
       console.table(res);
     }
   );
-  init();
+  setTimeout(() => {
+    checkIn();
+  }, 500);
 }
+
 
 async function addEmployee() {
   let details = await inquirer.prompt([
@@ -107,7 +128,9 @@ async function addEmployee() {
       console.log("This employee has been added!");
     }
   );
-  init();
+  setTimeout(() => {
+    checkIn();
+  }, 500);
 }
 
 async function updateEmpRole() {
@@ -157,10 +180,13 @@ async function updateEmpRole() {
       console.log("employee updated");
     }
   );
-  return init();
+  setTimeout(() => {
+    checkIn();
+  }, 500);
 }
 
-//role functions
+///////////////////role functions//////////////////////
+
 function allRole() {
   db.query(
     "SELECT * FROM department Left JOIN role ON department.id = role.department_id;",
@@ -169,7 +195,9 @@ function allRole() {
       console.table(res);
     }
   );
-  init();
+  setTimeout(() => {
+    checkIn();
+  }, 500);
 }
 
 async function addRole() {
@@ -209,11 +237,6 @@ async function addRole() {
       }
     );
   });
-  console.log(dept_id);
-
-  const department_id = dept_id[0].id;
-
-  console.log(department_id, title, salary);
 
   db.query(
     `INSERT INTO ROLE (title, salary, department_id) VALUES (?, ?, ?);`,
@@ -223,16 +246,21 @@ async function addRole() {
       console.log("This role has been added!");
     }
   );
-  return init();
+  setTimeout(() => {
+    checkIn();
+  }, 500);
 }
 
-//dept functions
+////////////////////////dept functions/////////////////
+
 function allDept() {
   db.query("SELECT * FROM DEPARTMENT;", (err, res) => {
     if (err) throw err;
     console.table(res);
   });
-  init();
+  setTimeout(() => {
+    checkIn();
+  }, 500);
 }
 
 async function addDept() {
@@ -248,7 +276,9 @@ async function addDept() {
     if (err) throw err;
     console.log("This dept has been added!");
   });
-  return init();
+  setTimeout(() => {
+    checkIn();
+  }, 500);
 }
 
 init();
