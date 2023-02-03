@@ -6,15 +6,15 @@ VALUES ("Client Success"),
        ("Operations");
 
 INSERT INTO role (title, salary, department_id)
-VALUES ("Client Success Specialist", 50000, 01),
-       ("Supervisor", 60000, 01),
-       ("Conference Manager", 70000, 01),
-       ("Sales Agent", 55000, 02),
-       ("Supervisor", 65000, 02),
-       ("Conference Manager", 80000, 02),
-       ("Ops Agent", 55000, 03),
-       ("Supervisor", 65000, 03),
-       ("Conference Manager", 80000, 03);
+VALUES ("Client Success Specialist", 50000, 1),
+       ("Supervisor", 60000, 1),
+       ("Conference Manager", 70000, 1),
+       ("Sales Agent", 55000, 2),
+       ("Supervisor", 65000, 2),
+       ("Conference Manager", 80000, 2),
+       ("Ops Agent", 55000, 3),
+       ("Supervisor", 65000, 3),
+       ("Conference Manager", 80000, 3);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Michael", "Mina", 3, NULL),
