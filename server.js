@@ -11,7 +11,7 @@ app.use('/api', apiRouter);
 const con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  database: "employee_db",
+  database: "employees_db",
   password: "Password@123",
 });
 con
